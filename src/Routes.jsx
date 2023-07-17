@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './Components/Navbar';
-import Home from './Components/Home';
-import MainPage from './Components/MainPage';
+import Home from './Pages/Home';
+import MainPage from './Pages/MainPage';
 import AddEditUser from './Components/AddEditUser';
 import Footer from './Components/Footer';
 

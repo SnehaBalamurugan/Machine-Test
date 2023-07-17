@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Button, Card, Input } from 'antd';
 import { UserOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
 import TextArea from 'antd/es/input/TextArea';
@@ -9,8 +8,11 @@ const AddEditUser = ({
     flag,
 }) => {
 
-    const navigate = useNavigate();
+    //State for table data
+
     const [tempArray, setTempArray] = useState([])
+
+    //State to set values in onChange Event
     const [userDetailsArray, setUserDetailsArray] = useState({
         id: Math.random().toString(36).substr(2, 9),
         firstName: '',
@@ -100,15 +102,13 @@ const AddEditUser = ({
                 address: userDetailsArray.address
             })
             localStorage.setItem('tableData', JSON.stringify(tempArray));
-            navigate('/main-page');
-            window.location.reload();
+            window.location.href='/main-page'
 
         }
         else {
             tempArray.push(userDetailsArray)
             localStorage.setItem('tableData', JSON.stringify(tempArray));
-            navigate('/main-page');
-            window.location.reload()
+            window.location.href='/main-page'
         }
     }
 
