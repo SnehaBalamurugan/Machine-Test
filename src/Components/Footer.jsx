@@ -10,13 +10,13 @@ const Footer = () => {
                 <div className="container text-center">
                     <span className="text-muted">© 2023 Knila</span>
                     <div className="social-icons">
-                        <a href="https://www.facebook.com/KnilaITSolutions/"  target="_blank" rel="noopener noreferrer">
+                        <a href={`${process.env.REACT_APP_KNILA_FACEBOOK}`}  target="_blank" rel="noopener noreferrer">
                             <FontAwesomeIcon icon={faFacebook} />
                         </a>
-                        <a href="https://twitter.com/knilaits" target="_blank" rel="noopener noreferrer">
+                        <a href={`${process.env.REACT_APP_KNILA_TWITTER}`} target="_blank" rel="noopener noreferrer">
                             <FontAwesomeIcon icon={faTwitter} />
                         </a>
-                        <a href="https://www.instagram.com/knila_it_solutions/" target="_blank" rel="noopener noreferrer">
+                        <a href={`${process.env.REACT_APP_KNILA_INSTAGRAM}`} target="_blank" rel="noopener noreferrer">
                             <FontAwesomeIcon icon={faInstagram} />
                         </a>
                     </div>
