@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Button, Table } from 'antd';
-import AddEditUser from './AddEditUser';
+import AddEditUser from '../Components/AddEditUser';
 import { EditOutlined } from '@ant-design/icons';
 
 
@@ -58,6 +58,11 @@ const MainPage = () => {
 
     ];
 
+    const onAddInfo = () => {
+        setAddComponent(!addComponent)
+        setFlag('Add')
+    }
+
     //Fetch and set data for table from LocalStorage
 
     useEffect(() => {
@@ -78,14 +83,13 @@ const MainPage = () => {
                     </div>
                     <div className="col-md-6 d-flex justify-content-end">
                         <Button type='primary' onClick={() => {
-                            setAddComponent(!addComponent)
-                            setFlag('Add')
+                            onAddInfo()
                         }}>{addComponent === false ? `Add User Information` : 'Back'}</Button>
                     </div>
                 </div>
             </div>
             {addComponent === true ? <AddEditUser rowValue={rowValue} flag={flag} /> :
-                <Table columns={columns} dataSource={dataSource} pagination={false} />
+                <Table rowClassName={(record, index) => record.firstName == 'Sneha' ? 'table-row-light' :  'table-row-dark'} columns={columns} dataSource={dataSource} pagination={false} />
             }
 
         </Fragment>

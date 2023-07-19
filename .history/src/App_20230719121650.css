@@ -33,7 +33,7 @@
 }
 
 .main-content {
-  min-height: 55vh;
+  min-height: 50vh;
   display: flex;
   flex-direction: column;
 }

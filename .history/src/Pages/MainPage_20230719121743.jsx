@@ -90,7 +90,7 @@ const MainPage = () => {
                 </div>
             </div>
             {addComponent === true ? <AddEditUser rowValue={rowValue} flag={flag} /> :
-                <Table rowClassName={(record, index) => dataSource[dataSource.length -1].id === record.id ? 'table-row-light' :  'table-row-dark'} columns={columns} dataSource={dataSource} pagination={false} />
+                <Table rowClassName={(record, index) => record.firstName == 'Sneha' ? 'table-row-light' :  'table-row-dark'} columns={columns} dataSource={dataSource} pagination={false} />
             }
 
         </Fragment>
