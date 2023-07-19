@@ -13,6 +13,7 @@ const AddEditUser = ({
 
     const [tempArray, setTempArray] = useState([])
 
+
     //State to set values in onChange Event
     const [userDetailsArray, setUserDetailsArray] = useState({
         id: Math.random().toString(36).substr(2, 9),
@@ -27,21 +28,11 @@ const AddEditUser = ({
         address: ''
     })
 
-    //State to set previous emails
-    const [prevEmail, setPrevEmail] = useState([])
-
     //Regex validations
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^\d{10}$/;
     const nameRegex = /^[A-Za-z]+$/;
-
-    //Validation Checks
-
-    const isValidFirstname = nameRegex.test(userDetailsArray.firstName);
-    const isValidLastname = nameRegex.test(userDetailsArray.lastName);
-    const isValidEmail = emailRegex.test(userDetailsArray.email);
-    const isValidPhone = phoneRegex.test(userDetailsArray.phone);
 
     //Fetching data from local Storage
 
@@ -54,15 +45,6 @@ const AddEditUser = ({
         }
 
     }, [localStorage.getItem('tableData')])
-
-    //To store previous emails in an array
-
-    useEffect(() => {
-        if (tempArray && tempArray.length > 0) {
-            const emailIds = tempArray.map((item) => item.email);
-            setPrevEmail(emailIds)
-        }
-    }, [tempArray])
 
     //To set value in input field,if edit is chosen
 
@@ -108,10 +90,21 @@ const AddEditUser = ({
         })
     }
 
-    //Symbol
+    console.log(userDetailsArray, 'userDetailsArray');
+
+    const isValidFirstname = nameRegex.test(userDetailsArray.firstName);
+    const isValidLastname = nameRegex.test(userDetailsArray.lastName);
+    const isValidEmail = emailRegex.test(userDetailsArray.email);
+    const isValidPhone = phoneRegex.test(userDetailsArray.phone);
 
     const getInputValiditySymbol = (isValid) => {
         return isValid ? '✓' : '✕';
+    };
+
+    const inputStyle = {
+        border: '1px solid',
+        borderColor: isValidEmail && isValidFirstname && isValidLastname && isValidPhone ? 'green' : 'red',
+        padding: '5px',
     };
 
     // Submit Event
@@ -119,8 +112,16 @@ const AddEditUser = ({
     const onSubmit = (event) => {
         event.preventDefault();
 
-        if (flag === 'Edit') {  //Flag to check if its add or edit
-            if (isValidFirstname && isValidLastname && isValidEmail && isValidPhone) {  //Validation & mandatory fields Check
+        //Check Validations
+
+        const isValidFirstname = nameRegex.test(userDetailsArray.firstName);
+        const isValidLastname = nameRegex.test(userDetailsArray.lastName);
+        const isValidEmail = emailRegex.test(userDetailsArray.email);
+        const isValidPhone = phoneRegex.test(userDetailsArray.phone);
+
+
+        if (flag === 'Edit') {
+            if (isValidFirstname && isValidLastname && isValidEmail && isValidPhone) {
                 const idToRemove = rowValue.id; // ID of the element to remove
                 const index = tempArray.findIndex((element) => element.id === idToRemove);
                 tempArray.splice(index, 1, {
@@ -139,22 +140,17 @@ const AddEditUser = ({
                 window.location.href = '/main-page'
             }
             else {
-                message.error('Please enter valid & mandatory inputs !')
+                message.error('Please enter valid input!')
             }
         }
         else {
             if (isValidFirstname && isValidLastname && isValidEmail && isValidPhone) {
-                if (prevEmail.includes(userDetailsArray.email)) { //To Check whether email id already exists in table
-                    message.error('Email Id Already Exists !')
-                }
-                else {
-                    tempArray.push(userDetailsArray)
-                    localStorage.setItem('tableData', JSON.stringify(tempArray));
-                    window.location.href = '/main-page'
-                }
+                tempArray.push(userDetailsArray)
+                localStorage.setItem('tableData', JSON.stringify(tempArray));
+                window.location.href = '/main-page'
             }
             else {
-                message.error('Please enter valid & mandatory inputs !')
+                message.error('Please enter valid input!')
             }
         }
     }
@@ -165,53 +161,28 @@ const AddEditUser = ({
                 <div className="col-md-12">
                     <div className="row">
                         <div className="col-md-6">
-                            <label htmlFor="">First Name</label><span className='m-1' style={{ color: 'red' }}>*</span>
-                            <Input placeholder="Abc" name='firstName'
-                                style={{
-                                    border: '1px solid',
-                                    borderColor: isValidFirstname ? 'green' : 'red',
-                                    padding: '5px',
-                                }}
-                                value={userDetailsArray.firstName} onChange={(e) => { addEditUserDetails(e) }} suffix={<UserOutlined />} />
-                            <span style={{ color: isValidFirstname ? 'green' : 'red' }}>{getInputValiditySymbol(isValidFirstname)}</span>
+                            <label htmlFor="">First Name</label>
+                            <Input placeholder="Abc" name='firstName' style={inputStyle} value={userDetailsArray.firstName} onChange={(e) => { addEditUserDetails(e) }} suffix={<UserOutlined />} />
+                            <span style={{ color: isValidEmail ? 'green' : 'red' }}>{getInputValiditySymbol(isValidFirstname)}</span>
                         </div>
                         <div className="col-md-6">
-                            <label htmlFor="">Last Name</label><span className='m-1' style={{ color: 'red' }}>*</span>
-                            <Input placeholder="Efg" name='lastName'
-                                style={{
-                                    border: '1px solid',
-                                    borderColor: isValidLastname ? 'green' : 'red',
-                                    padding: '5px',
-                                }}
-                                value={userDetailsArray.lastName}
-                                onChange={(e) => { addEditUserDetails(e) }} suffix={<UserOutlined />} />
-                            <span style={{ color: isValidLastname ? 'green' : 'red' }}>{getInputValiditySymbol(isValidLastname)}</span>
+                            <label htmlFor="">Last Name</label>
+                            <Input placeholder="Efg" name='lastName' style={inputStyle} value={userDetailsArray.lastName} onChange={(e) => { addEditUserDetails(e) }} suffix={<UserOutlined />} />
+                            <span style={{ color: isValidEmail ? 'green' : 'red' }}>{getInputValiditySymbol(isValidLastname)}</span>
                         </div>
                     </div>
                 </div>
                 <div className="col-md-12 mt-3">
                     <div className="row">
                         <div className="col-md-6">
-                            <label htmlFor="">Email Id</label><span className='m-1' style={{ color: 'red' }}>*</span>
-                            <Input placeholder="abc@gmail.com" name='email'
-                                style={{
-                                    border: '1px solid',
-                                    borderColor: isValidEmail ? 'green' : 'red',
-                                    padding: '5px',
-                                }}
-                                value={userDetailsArray.email} onChange={(e) => { addEditUserDetails(e) }} suffix={<MailOutlined />} />
-                            <span style={{ color: isValidEmail ? 'green' : 'red' }}>{getInputValiditySymbol(isValidEmail)}</span>
+                            <label htmlFor="">Email Id</label>
+                          <Input placeholder="abc@gmail.com" name='email' style={inputStyle} value={userDetailsArray.email} onChange={(e) => { addEditUserDetails(e) }} suffix={<MailOutlined />} />
+                          <span style={{ color: isValidEmail ? 'green' : 'red' }}>{getInputValiditySymbol(isValidEmail)}</span>  
                         </div>
                         <div className="col-md-6">
-                            <label htmlFor="">Phone Number</label><span className='m-1' style={{ color: 'red' }}>*</span>
-                            <Input placeholder="9876543210" name='phone'
-                                style={{
-                                    border: '1px solid',
-                                    borderColor: isValidPhone ? 'green' : 'red',
-                                    padding: '5px',
-                                }}
-                                value={userDetailsArray.phone} onChange={(e) => { addEditUserDetails(e) }} suffix={<PhoneOutlined />} />
-                            <span style={{ color: isValidPhone ? 'green' : 'red' }}>{getInputValiditySymbol(isValidPhone)}</span>
+                            <label htmlFor="">Phone Number</label>
+                            <Input placeholder="9876543210" name='phone' style={inputStyle} value={userDetailsArray.phone} onChange={(e) => { addEditUserDetails(e) }} suffix={<PhoneOutlined />} />
+                            <span style={{ color: isValidEmail ? 'green' : 'red' }}>{getInputValiditySymbol(isValidPhone)}</span>
                         </div>
                     </div>
                 </div>

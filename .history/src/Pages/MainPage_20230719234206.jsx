@@ -56,11 +56,20 @@ const MainPage = () => {
             dataIndex: false,
             align: 'center',
             render: (text, record) => {
-                return <EditOutlined style={{ fontSize: '20px' }} onClick={() => {
+                return (
+                    <>
+                <EditOutlined style={{ fontSize: '20px' }} onClick={() => {
                     setAddComponent(true)
                     setRowValue(record)
                     setFlag('Edit')
                 }} />
+                <p onClick={()=>{
+                  const idToRemove = record.id; // ID of the element to remove
+                  const index = dataSource.findIndex((element) => element.id === idToRemove);
+                  localStorage.removeItem(index);
+                }}>Delete</p> 
+                </>
+                )
             }
         }
 

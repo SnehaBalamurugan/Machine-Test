@@ -108,6 +108,8 @@ const AddEditUser = ({
         })
     }
 
+    console.log(userDetailsArray, 'userDetailsArray');
+
     //Symbol
 
     const getInputValiditySymbol = (isValid) => {
