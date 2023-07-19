@@ -12,7 +12,6 @@ const MainPage = () => {
     const [flag, setFlag] = useState('Add')
 
     //Table Columns
-    console.log(dataSource,'dataSource');
 
     const columns = [
         {
@@ -90,7 +89,7 @@ const MainPage = () => {
                 </div>
             </div>
             {addComponent === true ? <AddEditUser rowValue={rowValue} flag={flag} /> :
-                <Table rowClassName={(record, index) => dataSource[dataSource.length -1].id === record.id ? 'table-row-light' :  'table-row-dark'} columns={columns} dataSource={dataSource} pagination={false} />
+                <Table columns={columns} dataSource={dataSource} pagination={false} />
             }
 
         </Fragment>

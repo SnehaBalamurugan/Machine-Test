@@ -28,12 +28,12 @@
   margin-top: 20%;
 }
 
-.home-page h2 {
+.home-page h2{
   text-align: center;
 }
 
 .main-content {
-  min-height: 55vh;
+  min-height: 50vh;
   display: flex;
   flex-direction: column;
 }
@@ -46,15 +46,14 @@
   color: #61dafb;
 }
 
-.social-icons a {
+.social-icons a{
   margin-right: 10px;
   text-align: center;
 }
 
 .table-row-light {
-  background-color: #b9d8ed;
+  background-color: #ffffff;
 }
-
 .table-row-dark {
   background-color: #fbfbfb;
 }
@@ -63,7 +62,6 @@
   from {
     transform: rotate(0deg);
   }
-
   to {
     transform: rotate(360deg);
   }
