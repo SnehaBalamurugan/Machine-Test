@@ -32,24 +32,18 @@ const MainPage = () => {
         {
             title: 'Phone Number',
             dataIndex: 'phone',
-            render:(text,record) => record.phone ? record.phone : '-'
         },
         {
             title: 'City',
             dataIndex: 'city',
-            render:(text,record) => record.city ? record.city : '-'
         },
         {
             title: 'State',
             dataIndex: 'state',
-            render:(text,record) => record.state ? record.state : '-'
-
         },
         {
             title: 'Country',
             dataIndex: 'country',
-            render:(text,record) => record.country ? record.country : '-'
-
         },
         {
             title: 'Edit Details',

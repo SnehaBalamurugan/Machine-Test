@@ -13,6 +13,7 @@ const AddEditUser = ({
 
     const [tempArray, setTempArray] = useState([])
 
+
     //State to set values in onChange Event
     const [userDetailsArray, setUserDetailsArray] = useState({
         id: Math.random().toString(36).substr(2, 9),
@@ -27,7 +28,6 @@ const AddEditUser = ({
         address: ''
     })
 
-    //State to set previous emails
     const [prevEmail, setPrevEmail] = useState([])
 
     //Regex validations
@@ -35,13 +35,6 @@ const AddEditUser = ({
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^\d{10}$/;
     const nameRegex = /^[A-Za-z]+$/;
-
-    //Validation Checks
-
-    const isValidFirstname = nameRegex.test(userDetailsArray.firstName);
-    const isValidLastname = nameRegex.test(userDetailsArray.lastName);
-    const isValidEmail = emailRegex.test(userDetailsArray.email);
-    const isValidPhone = phoneRegex.test(userDetailsArray.phone);
 
     //Fetching data from local Storage
 
@@ -54,6 +47,7 @@ const AddEditUser = ({
         }
 
     }, [localStorage.getItem('tableData')])
+
 
     //To store previous emails in an array
 
@@ -108,7 +102,7 @@ const AddEditUser = ({
         })
     }
 
-    //Symbol
+    console.log(userDetailsArray, 'userDetailsArray');
 
     const getInputValiditySymbol = (isValid) => {
         return isValid ? '✓' : '✕';
@@ -119,32 +113,45 @@ const AddEditUser = ({
     const onSubmit = (event) => {
         event.preventDefault();
 
-        if (flag === 'Edit') {  //Flag to check if its add or edit
-            if (isValidFirstname && isValidLastname && isValidEmail && isValidPhone) {  //Validation & mandatory fields Check
-                const idToRemove = rowValue.id; // ID of the element to remove
-                const index = tempArray.findIndex((element) => element.id === idToRemove);
-                tempArray.splice(index, 1, {
-                    id: rowValue.id,
-                    firstName: userDetailsArray.firstName,
-                    lastName: userDetailsArray.lastName,
-                    email: userDetailsArray.email,
-                    phone: userDetailsArray.phone,
-                    city: userDetailsArray.city,
-                    state: userDetailsArray.state,
-                    country: userDetailsArray.country,
-                    postal: userDetailsArray.postal,
-                    address: userDetailsArray.address
-                })
-                localStorage.setItem('tableData', JSON.stringify(tempArray));
-                window.location.href = '/main-page'
+        //Check Validations
+
+        const isValidFirstname = nameRegex.test(userDetailsArray.firstName);
+        const isValidLastname = nameRegex.test(userDetailsArray.lastName);
+        const isValidEmail = emailRegex.test(userDetailsArray.email);
+        const isValidPhone = phoneRegex.test(userDetailsArray.phone);
+
+
+        if (flag === 'Edit') {
+            if (isValidFirstname && isValidLastname && isValidEmail && isValidPhone) {
+                if (prevEmail.includes(userDetailsArray.email)) {
+                    message.error('Email Id Already Exists !')
+                }
+                else {
+                    const idToRemove = rowValue.id; // ID of the element to remove
+                    const index = tempArray.findIndex((element) => element.id === idToRemove);
+                    tempArray.splice(index, 1, {
+                        id: rowValue.id,
+                        firstName: userDetailsArray.firstName,
+                        lastName: userDetailsArray.lastName,
+                        email: userDetailsArray.email,
+                        phone: userDetailsArray.phone,
+                        city: userDetailsArray.city,
+                        state: userDetailsArray.state,
+                        country: userDetailsArray.country,
+                        postal: userDetailsArray.postal,
+                        address: userDetailsArray.address
+                    })
+                    localStorage.setItem('tableData', JSON.stringify(tempArray));
+                    window.location.href = '/main-page'
+                }
             }
             else {
-                message.error('Please enter valid & mandatory inputs !')
+                message.error('Please enter valid input!')
             }
         }
         else {
             if (isValidFirstname && isValidLastname && isValidEmail && isValidPhone) {
-                if (prevEmail.includes(userDetailsArray.email)) { //To Check whether email id already exists in table
+                if (prevEmail.includes(userDetailsArray.email)) {
                     message.error('Email Id Already Exists !')
                 }
                 else {
@@ -154,7 +161,7 @@ const AddEditUser = ({
                 }
             }
             else {
-                message.error('Please enter valid & mandatory inputs !')
+                message.error('Please enter valid input!')
             }
         }
     }
@@ -165,7 +172,7 @@ const AddEditUser = ({
                 <div className="col-md-12">
                     <div className="row">
                         <div className="col-md-6">
-                            <label htmlFor="">First Name</label><span className='m-1' style={{ color: 'red' }}>*</span>
+                            <label htmlFor="">First Name</label>
                             <Input placeholder="Abc" name='firstName'
                                 style={{
                                     border: '1px solid',
@@ -176,15 +183,14 @@ const AddEditUser = ({
                             <span style={{ color: isValidFirstname ? 'green' : 'red' }}>{getInputValiditySymbol(isValidFirstname)}</span>
                         </div>
                         <div className="col-md-6">
-                            <label htmlFor="">Last Name</label><span className='m-1' style={{ color: 'red' }}>*</span>
+                            <label htmlFor="">Last Name</label>
                             <Input placeholder="Efg" name='lastName'
                                 style={{
                                     border: '1px solid',
                                     borderColor: isValidLastname ? 'green' : 'red',
                                     padding: '5px',
                                 }}
-                                value={userDetailsArray.lastName}
-                                onChange={(e) => { addEditUserDetails(e) }} suffix={<UserOutlined />} />
+                                value={userDetailsArray.lastName} onChange={(e) => { addEditUserDetails(e) }} suffix={<UserOutlined />} />
                             <span style={{ color: isValidLastname ? 'green' : 'red' }}>{getInputValiditySymbol(isValidLastname)}</span>
                         </div>
                     </div>
@@ -192,7 +198,7 @@ const AddEditUser = ({
                 <div className="col-md-12 mt-3">
                     <div className="row">
                         <div className="col-md-6">
-                            <label htmlFor="">Email Id</label><span className='m-1' style={{ color: 'red' }}>*</span>
+                            <label htmlFor="">Email Id</label>
                             <Input placeholder="abc@gmail.com" name='email'
                                 style={{
                                     border: '1px solid',
@@ -203,7 +209,7 @@ const AddEditUser = ({
                             <span style={{ color: isValidEmail ? 'green' : 'red' }}>{getInputValiditySymbol(isValidEmail)}</span>
                         </div>
                         <div className="col-md-6">
-                            <label htmlFor="">Phone Number</label><span className='m-1' style={{ color: 'red' }}>*</span>
+                            <label htmlFor="">Phone Number</label>
                             <Input placeholder="9876543210" name='phone'
                                 style={{
                                     border: '1px solid',
